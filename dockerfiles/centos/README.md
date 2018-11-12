@@ -1,7 +1,8 @@
 # Dockerfiles for WSO2 Enterprise Integrator #
 
-This section defines the step-by-step instructions to build [CentOS](https://hub.docker.com/_/centos/) Linux based Docker images for multiple profiles
-provided by WSO2 Enterprise Integrator 6.4.0, namely:<br>
+
+Esta seção define as instruções passo-a-passo para construir imagens do Docker baseadas em Linux para vários perfis [CentOS] (https://hub.docker.com/_/centos/)
+fornecido pelo WSO2 Enterprise Integrator 6.4.0, a saber: <br>
 
 1. Integrator
 2. Micro integrator
@@ -11,42 +12,43 @@ provided by WSO2 Enterprise Integrator 6.4.0, namely:<br>
 6. Analytics Dashboard
 7. Analytics Worker
 
-## Prerequisites
+## Prerequisitos
 * [Docker](https://www.docker.com/get-docker) v17.09.0 or above
 
-## How to build an image and run
+## Como construir uma imagem e executar
 
-##### 1. Checkout this repository into your local machine using the following git command.
+##### 1. Checkout este repositório em sua máquina local usando o seguinte comando git.
 
 ```
 git clone https://github.com/wso2/docker-ei.git
 ```
 
->The local copy of the `dockerfiles/centos` directory will be referred to as `DOCKERFILE_HOME` from this point onwards.
+>A cópia local do diretório `dockerfiles / centos` será referida como` DOCKERFILE_HOME` deste ponto em diante
 
-##### 2. Add JDK, WSO2 Enterprise Integrator distribution and required libraries.
+##### 2. Adicione a distribuição JDK, WSO2 Enterprise Integrator e as bibliotecas necessárias.
 
-- Download [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and
-extract into `<DOCKERFILE_HOME>/base/files`.
-- Download [WSO2 Enterprise Integrator 6.4.0 distribution](https://wso2.com/integration/) and 
-extract into `<DOCKERFILE_HOME>/base/files`.
-- Once both JDK and WSO2 Enterprise Integrator distribution are extracted, it should be as follows:
+- Download [JDK 1.8]
+extraia em `<DOCKERFILE_HOME>/base/files`.
+- Download [WSO2 Enterprise Integrator 6.4.0](https://wso2.com/integration/) e extraia
+em `<DOCKERFILE_HOME>/base/files`.
+- Depois que a distribuição do JDK e do WSO2 Enterprise Integrator for extraída, ela deverá ser a seguinte:
 ```
 <DOCKERFILE_HOME>/base/files/jdk<version>
 <DOCKERFILE_HOME>/base/files/wso2ei-6.4.0
 ```
-- Download [MySQL Connector/J](https://downloads.mysql.com/archives/c-j/) v5.1.45 and then copy that to `<DOCKERFILE_HOME>/base/files`,`<DOCKERFILE_HOME>/analytics/dashboard/files`and `<DOCKERFILE_HOME>/analytics/worker/files` folder
+- Download [MySQL Connector/J](https://downloads.mysql.com/archives/c-j/) v5.1.45 e copie para `<DOCKERFILE_HOME>/base/files`,`<DOCKERFILE_HOME>/analytics/dashboard/files`and `<DOCKERFILE_HOME>/analytics/worker/files` folder
 - Download [Andes Client](http://maven.wso2.org/nexus/content/groups/wso2-public/org/wso2/andes/wso2/andes-client/3.2.82/) JAR v3.2.82,
 [Geronimo JMS Spec](http://maven.wso2.org/nexus/content/groups/wso2-public/org/apache/geronimo/specs/wso2/geronimo-jms_1.1_spec/1.1.0.wso2v1/) JAR v1.1.0.wso2v1 and
 [Secure-vault](http://maven.wso2.org/nexus/content/groups/wso2-public/org/wso2/securevault/org.wso2.securevault/1.0.0-wso2v2/) JAR v.1.0.0-wso2v2 <br> to 
-`<DOCKERFILE_HOME>/integrator/files`. These libraries are needed for the communication between Integrator <br> and Message Broker.
-- If you intend to use the Docker images with Kubernetes clustered product deployments, download the
+`<DOCKERFILE_HOME>/integrator/files`.
+Essas bibliotecas são necessárias para a comunicação entre o Integrator <br> e o Message Broker.
+- Se você pretende usar as imagens do Docker com implantações de produtos em cluster do Kubernetes, baixe o
 [Kubernetes membership scheme](http://central.maven.org/maven2/org/wso2/carbon/kubernetes/artifacts/kubernetes-membership-scheme/1.0.5/kubernetes-membership-scheme-1.0.5.jar)
-and [dnsjava for DNS lookups](http://central.maven.org/maven2/dnsjava/dnsjava/2.1.8/dnsjava-2.1.8.jar) JAR artifacts and copy them to
-`<DOCKERFILE_HOME>/base/files` folder.
+and [dnsjava for DNS lookups](http://central.maven.org/maven2/dnsjava/dnsjava/2.1.8/dnsjava-2.1.8.jar) o Jar deve ser copiadao para o folder
+`<DOCKERFILE_HOME>/base/files` .
 
->Please refer to [WSO2 Update Manager documentation]( https://docs.wso2.com/display/WUM300/WSO2+Update+Manager)
-in order to obtain latest bug fixes and updates for the product.
+>Por favor, consulte[WSO2 Update Manager documentation]( https://docs.wso2.com/display/WUM300/WSO2+Update+Manager)
+a fim de obter as últimas correções de bugs e atualizações para o produto.
 
 ##### 3. Build the base Docker image.
 - For base, navigate to `<DOCKERFILE_HOME>/base` directory. <br>
@@ -109,22 +111,21 @@ in order to obtain latest bug fixes and updates for the product.
     
 >In here, <DOCKER_HOST> refers to hostname or IP of the host machine on top of which containers are spawned.
 
-## How to update configurations
-Configurations would lie on the Docker host machine and they can be volume mounted to the container. <br>
-As an example, steps required to change the port offset of Integrator profile using `carbon.xml` is as follows.
+## Como atualizar configurações
+As configurações estariam na máquina host do Docker e podem ser montadas em volume no contêiner. <br>
+Como exemplo, as etapas necessárias para alterar o deslocamento da porta do perfil do integrador usando `carbon.xml` são as seguintes.
 
-##### 1. Stop the integrator container if it's already running.
-In WSO2 Enterprise Integrator 6.4.0 product distribution, carbon.xml file for the integrator profile <br>
-can be found at `<DISTRIBUTION_HOME>/conf`. Copy the file to some suitable location of the host machine, <br>
-referred to as `<SOURCE_CONFIGS>/carbon.xml` and change the offset value under ports to 1.
+##### 1. Pare o contêiner do integrador se ele já estiver em execução.
+Na distribuição de produtos do WSO2 Enterprise Integrator 6.4.0, o arquivo carbon.xml para o perfil do integrador <br>
+pode ser encontrado em `<DISTRIBUTION_HOME> / conf`. Copie o arquivo para algum local adequado da máquina host, <br>
+referido como `<SOURCE_CONFIGS> / carbon.xml` e altere o valor do deslocamento em portas para 1.
 
-##### 2. Grant read permission to `other` users for `<SOURCE_CONFIGS>/carbon.xml`
-```
-chmod o+r <SOURCE_CONFIGS>/carbon.xml
-```
+##### 2. Conceder permissão de leitura aos usuários `other` para` <SOURCE_CONFIGS> / carbon.xml`
+`` `
+chmod o + r <SOURCE_CONFIGS> /carbon.xml
+`` `
 
-##### 3. Run the image by mounting the file to container as follows.
-```
+##### 3. Execute a imagem montando o arquivo no container da seguinte maneira.
 docker run 
 -p 8281:8281 -p 8244:8244 -p 9444:9444
 --volume <SOURCE_CONFIGS>/carbon.xml:<TARGET_CONFIGS>/carbon.xml
